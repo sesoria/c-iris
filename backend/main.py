@@ -2,7 +2,8 @@ import os
 import json
 import boto3
 import random
-from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from botocore.exceptions import BotoCoreError, ClientError, NoCredentialsError
 from cachetools import TTLCache
@@ -46,25 +47,33 @@ STREAMS_DATA = [
     }
 ]
 
-# Ruta temporal para guardar thumbnails
-TEMP_DIR = "/tmp/thumbnails"
-os.makedirs(TEMP_DIR, exist_ok=True)
+class StreamRequest(BaseModel):
+    streams: str  # Lista de nombres de streams
 
-
-@app.get("/get_thumbnails")
-async def get_thumbnails(streams: str):
+@app.post("/get_streams_thumbnails")
+async def get_streams_thumbnails(request: StreamRequest):
     """
     Obtiene un thumbnail en S3 del stream de KVS.
     """
-    print("Streams recibidos:", streams)
     try:
+        print("holaaaa")
+        # Parsear el cuerpo de la solicitud
+        body = await request.json()
+        print("holaaa",body)
+        streams = body.get("streams", [])  # Extraer la lista de streams
+
+        if not isinstance(streams, list):
+            raise ValueError("El parámetro 'streams' debe ser una lista.")
+
+        print("Streams recibidos:", streams)
+
         stream_names = json.loads(streams)
         thumbnails = []
         for stream in stream_names:
             s3_url = get_from_s3(stream)
             thumbnails.append({"title": stream, "cover": s3_url})
         thumbnails += generate_random_images(5)
-        return thumbnails
+        return json.loads(thumbnails)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail=str(e))
@@ -191,7 +200,7 @@ def generate_random_images(count=5):
     return images
 
 
-@app.get("/get_streams_data")
+@app.get("/get_streams_info")
 async def get_random_streams():
     """
     Devuelve una lista de informacion sobre streams
@@ -213,6 +222,13 @@ def get_all_items(table_name):
     while 'LastEvaluatedKey' in response:
         response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
         items.extend(response['Items'])
+        
+    for item in items:
+        item['tags'] = list(item['tags'])  # Convert set to list
+        item['view_count'] = float(item['view_count'])
+        item['last_played'] = float(item['last_played'])
+        item["detection_events"]["confidence"] = float(item["detection_events"]["confidence"])
+        item["detection_events"]["timestamp"] = float(item["detection_events"]["timestamp"])
 
     return items
 

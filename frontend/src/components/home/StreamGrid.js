@@ -51,7 +51,7 @@ const StreamGrid = ( { streamsData, thumbnails } ) => {
             }}
               key={index}
               >
-              <Link to={`/streams/${stream.stream_name}`} state={{ stream_name: stream.stream_name }} style={{ textDecoration: 'none' }}>
+              <Link to={`/streams/${stream.stream_name}`} state={{ streamName: stream.stream_name }} style={{ textDecoration: 'none' }}>
                   <Suspense fallback={<CircularProgress />}>
                       <StreamCard title={stream.stream_name} />
                   </Suspense>

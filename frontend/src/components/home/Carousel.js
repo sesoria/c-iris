@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
 import { Fab, Skeleton } from "@mui/material";
 import { StackedCarousel, ResponsiveContainer } from "react-stacked-center-carousel";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-// import { selectThumbnails } from "../../slices/thumbnailsSlice";
 
 
 
 export default function Carousel({ thumbnails }) {
     const ref = React.useRef();
-    // const { data } = useSelector(selectThumbnails);
-    console.log(thumbnails)
     return (
         <div style={{ width: "100%", position: "relative" }}>
             <ResponsiveContainer
@@ -67,7 +63,7 @@ export const Card = React.memo(function (props) {
     // Maneja el clic solo si no ha habido arrastre
     const handleClick = () => {
         if (!isDragging) {
-            navigate(`/streams/${title}`, {state: { stream_name: title }});
+            navigate(`/streams/${title}`, {state: { streamName: title }});
         }
     };
 

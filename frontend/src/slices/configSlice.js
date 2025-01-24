@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {  
-  serverHost: "http://localhost:8000",
+  serverHost: "https://phvitrbi12.execute-api.eu-west-1.amazonaws.com/",
+  // serverHost: "http://localhost:8000",
   theme: "dark"
 };
 
