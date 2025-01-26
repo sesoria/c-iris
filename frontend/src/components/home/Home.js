@@ -2,6 +2,7 @@ import Carousel from "./Carousel"
 import Main from "../layouts/Main";
 import StreamGrid from "./StreamGrid";
 import { useGetStreamsQuery, useGetThumbnailsQuery } from "../../api/streamsApi";
+import CarouselSkeleton from "../skeletons/CarouselSkeleton";
 
 
 function Home() {
@@ -10,13 +11,12 @@ function Home() {
   const { data: thumbnails, isLoading: thumbnailsLoading } = useGetThumbnailsQuery(streamNames, {
     skip: !streamNames.length, // Solo hacer la llamada si streamNames no está vacío
   });
-
-  if (streamsLoading || thumbnailsLoading) return <p>Loading...</p>;
+  const isLoading = streamsLoading || thumbnailsLoading;
 
   return (
     <>
       <Main className="content p5">
-        <Carousel thumbnails={thumbnails} ></Carousel>
+      {isLoading ? <CarouselSkeleton/> : <Carousel thumbnails={thumbnails}/>}
         <p sx={{ marginBottom: 2 }}>
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
           eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim

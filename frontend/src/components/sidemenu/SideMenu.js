@@ -88,7 +88,7 @@ function SideMenu({ menuItems }) {
       <Sidebar.Collapse getScrollValue={260}>
         <Sidebar.Header>
           <Sidebar.Brand className="sidebar-header">
-            <Link to="/homed"> {/* Reemplaza "/home" con la ruta a la que desees redirigir */}
+            <Link to="/home"> {/* Reemplaza "/home" con la ruta a la que desees redirigir */}
               <img src={logo} className="app-logo" alt="logo" />
             </Link>
           </Sidebar.Brand>

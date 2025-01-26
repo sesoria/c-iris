@@ -4,6 +4,7 @@ import Stream from "./Stream";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useGetHlsStreamUrlQuery, useGetStreamsQuery } from "../../api/streamsApi";
+import StreamSkeleton from "../skeletons/StreamSkeleton";
 
 export default function StreamingPage() {
   const location = useLocation();
@@ -26,23 +27,20 @@ export default function StreamingPage() {
       setCurrentUrl(urlOffline); // Usa la URL offline en caso de error
   }, [hlsUrl, urlOffline]);
 
-  if (isLoading) {
-    return <p>Cargando...</p>;
-  }
-
   if (error && error.status === 404) {
     const errorMessage = error.data?.message || "Error desconocido";
     return <p>Error: {errorMessage} (Status: {error.status} ABRE STREAM)</p>;
   }
 
   return (
-    <Box display='flex' flexDirection={{ xs: 'column', md: 'row' }} gap={2}>
-      <Box component='section' flex={1} minWidth='0' sx={{ width: { xs: '100%', md: '70%' }, maxWidth: { xs: '100%', md: '70%' }, mb: { xs: 2, md: 0 } }}>
-        <Stream url={currentUrl} />
+    isLoading ? <StreamSkeleton/> :
+      <Box display='flex' flexDirection={{ xs: 'column', md: 'row' }} gap={2}>
+          <Box component='section' flex={1} minWidth='0' sx={{ width: { xs: '100%', md: '70%' }, maxWidth: { xs: '100%', md: '70%' }, mb: { xs: 2, md: 0 } }}>
+            <Stream url={currentUrl} />
+          </Box>
+          <Box component='section' flex={1} minWidth='0' sx={{ width: { xs: '100%', md: '30%' }, maxWidth: { xs: '100%', md: '30%' } }}>
+            <LogsTimeline />
+          </Box>
       </Box>
-      <Box component='section' flex={1} minWidth='0' sx={{ width: { xs: '100%', md: '30%' }, maxWidth: { xs: '100%', md: '30%' } }}>
-        <LogsTimeline />
-      </Box>
-    </Box>
   )
 }
