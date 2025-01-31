@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Typography, Collapse, List, ListItem, ListItemText, Box, LinearProgress, Avatar } from '@mui/material';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@mui/lab';
 import { timelineItemClasses } from '@mui/lab/TimelineItem';
 import getRandomLabels from '../utils/getRandomLabels';
-
+import { useSelector } from 'react-redux';
+import { selectDetections } from "../../slices/detectionsSlice"; // Import your selector
 const getCategoryIcon = (category) => {
   switch (category) {
     case 'Neighborhood':
@@ -30,6 +31,29 @@ const getConfidenceColor = (confidence) => {
 const LogsTimeline = () => {
   const [logs, setLogs] = useState([]);
   const [expanded, setExpanded] = useState(null);
+  const [lastDetections, setLastDetections] = useState(null)
+  const detections = useSelector(selectDetections);
+
+  useEffect(() => {
+      console.log("hola intentamos añadir un log")
+      console.log(detections)
+      if (detections.labels.length > 0) {
+        const timestamp = new Date(detections.timestamp * 1000).toLocaleString();
+        setLogs((prevLogs) => [{ timestamp, labels: detections.labels }, ...prevLogs]);
+      }
+  }, [detections]);
+  
+  // useEffect(() => {
+  //     console.log("hola intentamos añadir un log")
+  //     if (labelsRef.current && labelsRef.current.labels.length > 0) {
+  //       if (lastDetections !== labelsRef.current){
+  //         const timestamp = new Date(labelsRef.current.timestamp * 1000).toLocaleString();
+  //         setLogs((prevLogs) => [...prevLogs, { timestamp, labels: labelsRef.current.labels }]);
+  //         setLastDetections(labelsRef.current)
+  //       }
+  //     }
+  // }, [labelsRef, lastDetections]);
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,7 +63,7 @@ const LogsTimeline = () => {
     }, 120000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, []); // Este efecto solo se ejecuta una vez al montar el componente
 
   const handleChange = (index) => () => {
     setExpanded(expanded === index ? null : index);
@@ -55,7 +79,7 @@ const LogsTimeline = () => {
         { Name: 'Person', Confidence: 98.77 }
       ]
     };
-    setLogs((prevLogs) => [...prevLogs, exampleLog]);
+    setLogs((prevLogs) => [exampleLog, ...prevLogs]);
   };
 
   return (
