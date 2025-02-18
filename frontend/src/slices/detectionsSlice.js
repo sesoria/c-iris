@@ -28,7 +28,7 @@ const detectionsSlice = createSlice({
                 });
 
                 // Opcional: mantener solo las últimas N detecciones para evitar crecimiento infinito
-                if (state.streams[stream_name].length > 10) {
+                if (state.streams[stream_name].length > 20) {
                     state.streams[stream_name].pop(); // Elimina la más antigua
                 }
             }

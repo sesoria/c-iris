@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 const Stream = ({ url, streamName }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  
+
   const detections = useSelector((state) =>
     (state.detections.streams && state.detections.streams[streamName]) || []
   );
@@ -13,15 +13,14 @@ const Stream = ({ url, streamName }) => {
   const [baseline, setBaseline] = useState(null);
   const [currentDetections, setCurrentDetections] = useState([]);
 
-  // Usamos loadeddata en vez de play
+  // Establecer baseline en loadeddata
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     const handleLoadedData = () => {
-      // Establecemos el baseline cuando los datos están listos
       const newBaseline = Date.now() / 1000 - video.currentTime;
-      setBaseline(newBaseline - 2);
+      setBaseline(newBaseline - 2); // Ajuste fino si es necesario
       console.log("Nuevo baseline (segundos):", newBaseline);
     };
 
@@ -31,27 +30,47 @@ const Stream = ({ url, streamName }) => {
 
   useEffect(() => {
     if (!videoRef.current || baseline === null) return;
-
+  
     const updateDetections = () => {
       const videoTime = videoRef.current.currentTime;
-      const threshold = 1;
-
-      const matchingDetections = detections
-        .filter((detection) => {
-          const detectionRelativeTime = detection.timestamp - baseline;
-          console.log(
-            `detection.timestamp: ${detection.timestamp}, baseline: ${baseline}, detectionRelativeTime: ${detectionRelativeTime}, videoTime: ${videoTime}`
-          );
-          return Math.abs(detectionRelativeTime - videoTime) <= threshold;
-        })
-        .reduce((acc, detection) => [...acc, ...detection.labels], []);
-
-      setCurrentDetections(matchingDetections);
+  
+      // Ordenamos detecciones por tiempo relativo
+      const sortedDetections = [...detections].sort(
+        (a, b) => a.timestamp - b.timestamp
+      );
+  
+      // Encontramos la primera detección en la línea de tiempo
+      const firstDetectionTime = sortedDetections.length > 0 
+        ? sortedDetections[0].timestamp - baseline 
+        : Infinity; // Si no hay detecciones, usamos un valor grande
+  
+      // Si el usuario está antes de la primera detección, limpiamos las bounding boxes
+      if (videoTime < firstDetectionTime) {
+        setCurrentDetections([]);
+        return;
+      }
+  
+      // Buscar la última detección antes o en el mismo segundo que videoTime
+      let latestDetection = null;
+      for (const detection of sortedDetections) {
+        const detectionRelativeTime = detection.timestamp - baseline;
+  
+        if (detectionRelativeTime <= videoTime) {
+          latestDetection = detection;
+        } else {
+          break; // Salimos al encontrar la primera detección futura
+        }
+      }
+  
+      if (latestDetection) {
+        setCurrentDetections(latestDetection.labels);
+      }
     };
-
+  
     const interval = setInterval(updateDetections, 500);
     return () => clearInterval(interval);
   }, [detections, baseline]);
+  
 
   useEffect(() => {
     const canvas = canvasRef.current;

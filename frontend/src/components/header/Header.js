@@ -1,28 +1,22 @@
-import { useSelector, useDispatch } from "react-redux";
-import { selectConfig, setTheme } from "../../slices/configSlice";
-import { Container, Nav, Navbar, NavDropdown, Button } from 'react-bootstrap'
-import { useLocation, Link } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { selectConfig } from "../../slices/configSlice";
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
+// import { useLocation, Link } from 'react-router-dom';
 
 
 function Header() {
   const { theme } = useSelector(selectConfig);
-  const { pathname } =  useLocation();
-  const dispatch = useDispatch();
+  // const { pathname } =  useLocation();
 
-
-  function test() {
-    dispatch(setTheme("dark"));
-  }
 
   return (
     <Navbar className="main-header" expand="lg" bg={theme} variant={theme}>
       <Container className="container-header">
-        <Navbar.Brand>POC DSD</Navbar.Brand>
-        <Button onClick={test}>Hola</Button>
+        <Navbar.Brand>POC IRIS</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Link className={pathname==="/dashboard" ? "nav-link active" : "nav-link"} to={"/map"}>Maps</Link>
+            {/* <Link className={pathname==="/dashboard" ? "nav-link active" : "nav-link"} to={"/map"}>Maps</Link>
             <Link className={pathname==="/dashboard" ? "nav-link active" : "nav-link"} to={"/dashboard"}>Dashboard</Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -34,7 +28,7 @@ function Header() {
               <NavDropdown.Item href="#action/3.4">
                 Separated link
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { Typography, Collapse, List, ListItem, ListItemText, Box, LinearProgress, Avatar } from '@mui/material';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@mui/lab';
 import { timelineItemClasses } from '@mui/lab/TimelineItem';
@@ -30,8 +30,6 @@ const getConfidenceColor = (confidence) => {
 const LogsTimeline = ({ streamName }) => {
   const [expanded, setExpanded] = useState(null);
   const detections = useSelector(selectDetections);
-  console.log(detections)
-  console.log(detections.streams[streamName])
 
   const handleChange = (index) => () => {
     setExpanded(expanded === index ? null : index);
@@ -45,7 +43,7 @@ const LogsTimeline = ({ streamName }) => {
           padding: 0,
         },
       }}>
-        {detections.streams[streamName]?.map((log, index) => (
+        {detections.streams[streamName]?.slice(0,10).map((log, index) => (
           <TimelineItem key={index}>
             <TimelineSeparator>
               <TimelineDot color="primary" />

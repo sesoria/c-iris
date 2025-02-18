@@ -14,13 +14,13 @@ function App() {
   const menuItems = [
     {
       icon: faChartPie,
-      title: "Some option",
+      title: "Opt1",
       items: ["op1", "op2"],
       onClick: (item) => alert(`Click on ${item}`),
     },
     {
       icon: faChartLine,
-      title: "Some other option",
+      title: "Opt2",
       items: ["op3", "op4"],
       onClick: (item) => alert(`Click on ${item}`),
     },
