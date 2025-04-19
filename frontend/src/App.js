@@ -1,16 +1,15 @@
-
 import "./styles.scss";
-import React from "react";
+import React, { useState } from "react";
 import Layout from "./components/layouts/Layout";
-import Header from "./components/header/Header"
+import Header from "./components/header/Header";
 import SideMenu from "./components/sidemenu/SideMenu";
-import Home from "./components/home/Home"
+import Home from "./components/home/Home";
 import StreamingPage from "./components/streaming/StreamingPage";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { faChartPie, faChartLine } from "@fortawesome/free-solid-svg-icons";
 
-
 function App() {
+  const [menuExpanded, setMenuExpanded] = useState(true);  // Estado para el sidebar
   const menuItems = [
     {
       icon: faChartPie,
@@ -26,10 +25,15 @@ function App() {
     },
   ];
 
+  // Función toggle que cambia el estado de visibilidad del sidebar
+  const toggleSidebar = () => {
+    setMenuExpanded(!menuExpanded);
+  };
+
   return (
     <Layout>
-      <Header/>
-      <SideMenu menuItems={menuItems} />
+      <Header toggleSidebar={toggleSidebar} />
+      <SideMenu menuItems={menuItems} setMenuExpanded={setMenuExpanded} menuExpanded={menuExpanded} />
       <Routes>
         <Route path="*" element={<Navigate to="/home" replace />} />
         <Route path="home" element={<Home />} />
@@ -38,6 +42,5 @@ function App() {
     </Layout>
   );
 }
-
 
 export default App;

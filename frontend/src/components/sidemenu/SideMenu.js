@@ -1,23 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, InputGroup, Button } from "react-bootstrap";
 import { faChevronDown, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "react-bootstrap-sidebar-menu";
-import logo from "../../urjc-logo-2.png";
 import { useSelector } from "react-redux";
 import { selectConfig } from "../../slices/configSlice";
 
-
-function SideMenu({ menuItems }) {
-  const [menuExpanded, setMenuExpanded] = useState(true);
+function SideMenu({ menuItems, setMenuExpanded, menuExpanded }) {
   const [subMenuOpen, setSubMenuOpen] = useState(null);
   const { theme } = useSelector(selectConfig);
 
   const handleToggle = () => {
     if (menuExpanded) setSubMenuOpen(null);
-    setMenuExpanded(!menuExpanded);
+    setMenuExpanded(!menuExpanded); // Usamos la prop setMenuExpanded
   };
+
+  useEffect(() => {
+    if (!menuExpanded) setSubMenuOpen(null);
+  }, [menuExpanded]);
 
   function SidebarNavItem({ icon, title, items, onClick, searchBar = false, onChangeInput }) {
     const inputValue = localStorage.getItem(`prefix${title}`) || '';
@@ -29,7 +29,7 @@ function SideMenu({ menuItems }) {
 
     const handleSubToggle = () => {
       if (!menuExpanded) {
-        setMenuExpanded(true);
+        setMenuExpanded(true); // Cambia a expandido
         setTimeout(() => setSubMenuOpen(title), 250);
       } else {
         setSubMenuOpen(subMenuOpen === title ? null : title);
@@ -80,20 +80,12 @@ function SideMenu({ menuItems }) {
           </Sidebar.Nav>
         </Sidebar.Sub.Collapse>
       </Sidebar.Sub>
-    )
+    );
   };
 
   return (
-    <Sidebar className="sidebar" variant={theme} bg={theme} expand={false} onToggle={handleToggle} expanded={menuExpanded}>
+    <Sidebar className="sidebar" variant={theme} bg={theme} expand={false} onToggle={handleToggle} expanded={menuExpanded}> {/* Usamos la prop menuExpanded */}
       <Sidebar.Collapse getScrollValue={260}>
-        <Sidebar.Header>
-          <Sidebar.Brand className="sidebar-header">
-            <Link to="/home"> {/* Reemplaza "/home" con la ruta a la que desees redirigir */}
-              <img src={logo} className="app-logo" alt="logo" />
-            </Link>
-          </Sidebar.Brand>
-          <Sidebar.Toggle />
-        </Sidebar.Header>
         <Sidebar.Body className="font-m">
           <Sidebar.Nav>
             {menuItems.map((item, index) => (
@@ -112,7 +104,6 @@ function SideMenu({ menuItems }) {
       </Sidebar.Collapse>
     </Sidebar>
   );
-};
-
+}
 
 export default SideMenu;

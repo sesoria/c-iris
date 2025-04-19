@@ -57,7 +57,7 @@ const StreamGrid = ({ streamsData, thumbnails }) => {
                 state={{ streamName: stream.stream_name }}
                 style={{ textDecoration: "none" }}
               >
-                <Suspense fallback={<CircularProgress />}>
+                <Suspense fallback={<CircularProgress sx={{ display: 'block', margin: '0 auto' }}/>}>
                   <StreamCard title={stream.stream_name} />
                 </Suspense>
               </Link>
@@ -68,9 +68,19 @@ const StreamGrid = ({ streamsData, thumbnails }) => {
 
       {visibleCount < streamsData?.length && (
         <Box mt={3} display="flex" justifyContent="center">
-          <Button variant="contained" onClick={showMoreItems}>
-            Mostrar más
-          </Button>
+          {isLoading ? 
+            <Skeleton
+              variant="rectangular"
+              height={36.5} // Altura aproximada de la card
+              width={139.9}
+              animation="wave"
+              sx={{ borderRadius: "8px" }}
+            />
+            :
+            <Button variant="contained" onClick={showMoreItems}>
+              Mostrar más
+            </Button>
+          }
         </Box>
       )}
     </Box>
