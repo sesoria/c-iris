@@ -1,5 +1,5 @@
 import { useState, Suspense, lazy, useEffect } from "react";
-import { Grid2, Button, Box, Skeleton, useMediaQuery, CircularProgress } from "@mui/material";
+import { Grid, Button, Box, Skeleton, useMediaQuery, CircularProgress } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 
@@ -30,12 +30,12 @@ const StreamGrid = ({ streamsData, thumbnails }) => {
 
   return (
     <Box>
-      <Grid2 container display={'flex'}>
+      <Grid container display={'flex'}>
         {(isLoading
           ? Array.from(new Array(visibleCount)) // Placeholder Skeletons mientras carga
           : streamsData.slice(0, visibleCount)
         ).map((stream, index) => (
-          <Grid2
+          <Grid
             size={{
               xs:12,
               sm:6,
@@ -62,9 +62,9 @@ const StreamGrid = ({ streamsData, thumbnails }) => {
                 </Suspense>
               </Link>
             )}
-          </Grid2>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
 
       {visibleCount < streamsData?.length && (
         <Box mt={3} display="flex" justifyContent="center">

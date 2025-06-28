@@ -1,6 +1,8 @@
+@use "bootstrap/scss/bootstrap" as bs;
+
 $sidebar-menu-toggle-icon-width: 1.5em !default;
 $sidebar-menu-toggle-icon-height: 1.5em !default;
-$sidebar-menu-toggle-padding-x: $navbar-toggler-padding-x !default;
+$sidebar-menu-toggle-padding-x: bs.$navbar-toggler-padding-x !default;
 $sidebar-menu-width-expanded: 500px !default;
 $sidebar-menu-header-padding-x: 0.5rem !default;
 $sidebar-menu-header-padding-y: 0.5rem !default;
