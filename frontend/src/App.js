@@ -23,6 +23,12 @@ function App() {
       items: ["op3", "op4"],
       onClick: (item) => alert(`Click on ${item}`),
     },
+    {
+      icon: faChartLine,
+      title: "Opt3",
+      items: ["op5", "op6"],
+      onClick: (item) => alert(`Click on ${item}`),
+    },
   ];
 
   // Función toggle que cambia el estado de visibilidad del sidebar
