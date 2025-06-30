@@ -9,7 +9,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { faChartPie, faChartLine } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
-  const [menuExpanded, setMenuExpanded] = useState(true);  // Estado para el sidebar
+  const [menuExpanded, setMenuExpanded] = useState(false);
   const menuItems = [
     {
       icon: faChartPie,

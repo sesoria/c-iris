@@ -51,8 +51,8 @@ function SideMenu({ menuItems, setMenuExpanded, menuExpanded }) {
         <Sidebar.Sub.Toggle>
           <FontAwesomeIcon icon={icon} />
           <Sidebar.Nav.Title className="nav-title">{title}
-            <Sidebar.Nav.Icon className="float-end font-xs">
-              <FontAwesomeIcon icon={faChevronDown} />
+            <Sidebar.Nav.Icon className="float-end font-xxs">
+              <FontAwesomeIcon icon={faChevronDown} className="font-xs"/>
             </Sidebar.Nav.Icon>
           </Sidebar.Nav.Title>
         </Sidebar.Sub.Toggle>
@@ -84,9 +84,19 @@ function SideMenu({ menuItems, setMenuExpanded, menuExpanded }) {
   };
 
   return (
-    <Sidebar className="sidebar" variant={theme} bg={theme} expand={false} onToggle={handleToggle} expanded={menuExpanded}> {/* Usamos la prop menuExpanded */}
-      <Sidebar.Collapse getScrollValue={260}>
-        <Sidebar.Body className="font-m">
+    <Sidebar
+      style={{
+        width: menuExpanded ? '250px' : '60px',
+        transition: 'width 0.3s ease'
+      }}
+      variant={theme}
+      bg={theme}
+      expand={false}
+      onToggle={handleToggle}
+      expanded={menuExpanded}
+    >
+      <Sidebar.Collapse getScrollValue={250}>
+        <Sidebar.Body>
           <Sidebar.Nav>
             {menuItems.map((item, index) => (
               <SidebarNavItem

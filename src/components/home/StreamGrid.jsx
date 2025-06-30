@@ -30,7 +30,7 @@ const StreamGrid = ({ streamsData, thumbnails }) => {
 
   return (
     <Box>
-      <Grid container display={'flex'}>
+      <Grid container display={'flex'} rowSpacing={6} columnSpacing={10}>
         {(isLoading
           ? Array.from(new Array(visibleCount)) // Placeholder Skeletons mientras carga
           : streamsData.slice(0, visibleCount)
@@ -43,11 +43,13 @@ const StreamGrid = ({ streamsData, thumbnails }) => {
               lg:4,
             }}
             key={index}
+            rowSpacing={6}
+            columnSpacing={10}
           >
             {isLoading ? (
               <Skeleton
                 variant="rectangular"
-                height={200} // Altura aproximada de la card
+                height={250} // Altura aproximada de la card
                 animation="wave"
                 sx={{ borderRadius: "8px" }}
               />
@@ -58,7 +60,7 @@ const StreamGrid = ({ streamsData, thumbnails }) => {
                 style={{ textDecoration: "none" }}
               >
                 <Suspense fallback={<CircularProgress sx={{ display: 'block', margin: '0 auto' }}/>}>
-                  <StreamCard title={stream.stream_name} />
+                  <StreamCard title={stream.stream_name} imageUrl={thumbnails[index].cover}/>
                 </Suspense>
               </Link>
             )}

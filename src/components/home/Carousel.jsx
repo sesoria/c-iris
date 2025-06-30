@@ -21,7 +21,7 @@ export default function Carousel({ thumbnails }) {
                         <StackedCarousel
                             ref={carouselRef}
                             slideComponent={Card}
-                            slideWidth={parentWidth < 800 ? parentWidth - 40 : 750}
+                            slideWidth={parentWidth < 800 ? parentWidth - 40 : 400}
                             carouselWidth={parentWidth}
                             data={thumbnails}
                             currentVisibleSlide={currentVisibleSlide}
@@ -94,8 +94,9 @@ export const Card = React.memo(function (props) {
                 style={{
                     height: "100%",
                     width: "100%",
-                    objectFit: "cover",
-                    borderRadius: 0,
+                    objectFit: "contain",
+                    backgroundColor: "black",
+                    borderRadius: 5,
                     opacity: loaded ? 1 : 0, // Cambiar la opacidad
                     transition: "opacity 0.5s ease-in-out", // Efecto de transición suave
                     position: "absolute", // Mantener la imagen en el mismo lugar que el Skeleton

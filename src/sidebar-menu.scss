@@ -9,10 +9,7 @@ $sidebar-menu-header-padding-y: 0.5rem !default;
 $sidebar-menu-brand-font-size: $navbar-brand-font-size !default;
 
 // Toggle button size with padding
-$sidebar-menu-width-collapsed: calc(
-  #{$sidebar-menu-toggle-icon-width} * 1 + #{$sidebar-menu-toggle-padding-x} *
-    2 + #{$sidebar-menu-header-padding-x} * 2 + #{$border-width} * 2
-) !default;
+$sidebar-menu-width-collapsed: 60px;
 
 $sidebar-menu-padding-y: $navbar-padding-y !default;
 $sidebar-menu-padding-x: $navbar-padding-x !default;

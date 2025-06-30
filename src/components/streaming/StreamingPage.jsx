@@ -1,3 +1,4 @@
+import Main from "../layouts/Main";
 import Stream from "./Stream";
 import { Box } from "@mui/material";
 import LogsTimeline from "./LogsTimeline";
@@ -42,6 +43,7 @@ export default function StreamingPage() {
 
   return (
     isLoading ? <StreamSkeleton /> :
+    <Main>
       <Box display='flex' flexDirection={{ xs: 'column', md: 'row' }} gap={2}>
         <Box component='section' flex={1} minWidth='0' sx={{ width: { xs: '100%', md: '70%' }, maxWidth: { xs: '100%', md: '70%' }, mb: { xs: 2, md: 0 } }}>
           <Stream url={currentUrl} streamName={streamName}/>
@@ -50,5 +52,6 @@ export default function StreamingPage() {
           <LogsTimeline streamName={streamName}/>
         </Box>
       </Box>
+    </Main>
   )
 }

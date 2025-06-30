@@ -5,24 +5,21 @@ import { selectConfig } from "../../slices/configSlice";
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { Container, Navbar, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
 function Header({ toggleSidebar }) {
   const { theme } = useSelector(selectConfig);
 
   return (
-    <Navbar className="main-header" expand="lg" bg={theme} variant={theme}>
-      {/* Fluid para ancho completo + override del justify */}
-      <Container fluid className="container-header d-flex justify-content-start align-items-center">
+    <Navbar className="main-header p0" expand="lg" bg={theme} variant={theme}>
+      <Container fluid className="container-header d-flex align-items-center">
         <Button onClick={toggleSidebar} variant="outline-light" className="me-3">
           <FontAwesomeIcon icon={faBars} />
         </Button>
-        <Link to="/home" className="d-flex align-items-center">
-          <img src={logo} className="app-logo me-2" alt="logo" style={{ height: '30px', width: '50px', objectFit: 'contain', transform: 'translateY(-6  px)'}}/>
+        <Link to="/home" className="d-flex align-items-center mx-auto" style={{cursor: "pointer"}}>
+          <img src={logo} className="app-logo" alt="logo" />
         </Link>
-        <Navbar.Brand className="d-flex align-items-center">
-            POC IRIS
-        </Navbar.Brand>
       </Container>
-
     </Navbar>
   );
 }
