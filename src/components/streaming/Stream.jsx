@@ -117,7 +117,7 @@ const Stream = ({ url, streamName }) => {
   }, [currentDetections]);
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "auto" }}>
+    <div style={{ position: "relative", width: "100%", maxWidth: "1000px", height: "auto" }}>
       <ReactHlsPlayer
         playerRef={videoRef}
         src={url}
