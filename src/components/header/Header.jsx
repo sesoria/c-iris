@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import logo from "../../urjc-logo-3.png";
 import { useSelector } from "react-redux";
 import { selectConfig } from "../../slices/configSlice";
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +16,7 @@ function Header({ toggleSidebar }) {
           <FontAwesomeIcon icon={faBars} />
         </Button>
         <Link to="/home" className="d-flex align-items-center mx-auto" style={{cursor: "pointer"}}>
-          <img src={logo} className="app-logo" alt="logo" />
+          <img src="/urjc-logo.png" className="app-logo" alt="Logo URJC" />
         </Link>
       </Container>
     </Navbar>
