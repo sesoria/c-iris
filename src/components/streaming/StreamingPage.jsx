@@ -34,20 +34,8 @@ const getVideoType = (type) => {
   }
 };
 
-
-const VideoSection = ({ url, streamData }) => (
-  <Box
-    component="section"
-    flex={1}
-    minWidth={0}
-    sx={{
-      width: { xs: '100%', md: '70%' },
-      maxWidth: { xs: '100%', md: '70%' },
-      mb: { xs: 2, md: 0 },
-    }}
-  >
-    <Stream url={url} streamName={streamData?.streamName} />
-
+const StreamInfo = ({streamData }) => (
+  <>
     <Typography
       variant="h6"
       component="h2"
@@ -86,8 +74,7 @@ const VideoSection = ({ url, streamData }) => (
       </Box>
       {streamData?.description}
     <StreamTags tags={streamData?.tags} />
-
-  </Box>
+  </>
 );
 
 const LogsSection = ({ streamName }) => (
@@ -163,8 +150,11 @@ export default function StreamingPage() {
     <StreamSkeleton />
   ) : (
     <Main>
-      <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={2}>
-        <VideoSection url={currentUrl} streamData={streamData} />
+      <Box display='flex' flexDirection={{ xs: 'column', md: 'row' }} gap={2}>
+        <Box component='section' flex={1} minWidth='0' sx={{ width: { xs: '100%', md: '70%' }, maxWidth: { xs: '100%', md: '70%' }, mb: { xs: 2, md: 0 } }}>
+          <Stream url={currentUrl} streamName={streamName}/>
+          <StreamInfo streamData={streamData} />
+        </Box>
         <LogsSection streamName={streamName} />
       </Box>
     </Main>
