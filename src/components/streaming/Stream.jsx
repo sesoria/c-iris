@@ -21,7 +21,7 @@ const Stream = ({ url, streamName }) => {
     const handleLoadedData = () => {
       const newBaseline = Date.now() / 1000 - video.currentTime;
       setBaseline(newBaseline - 2); // Ajuste fino si es necesario
-      console.log("Nuevo baseline (segundos):", newBaseline);
+
     };
 
     video.addEventListener("loadeddata", handleLoadedData);
@@ -116,14 +116,34 @@ const Stream = ({ url, streamName }) => {
     drawBoundingBoxes();
   }, [currentDetections]);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleLoadedData = () => {
+      const newBaseline = Date.now() / 1000 - video.currentTime;
+      setBaseline(newBaseline - 2);
+      console.log("Nuevo baseline (segundos):", newBaseline);
+
+      // Autoplay controlado
+      video.play().catch((err) => {
+        console.warn("Autoplay falló:", err.message);
+      });
+    };
+
+    video.addEventListener("loadeddata", handleLoadedData);
+    return () => video.removeEventListener("loadeddata", handleLoadedData);
+  }, []);
+
   return (
     <div style={{ position: "relative", width: "100%", maxWidth: "1000px", height: "auto" }}>
       <ReactHlsPlayer
         playerRef={videoRef}
         src={url}
         controls
-        width="100%"
+        width="95%"
         height="auto"
+        style={{border: "2px solid #212529", borderRadius: "10px"}}
       />
       <canvas
         ref={canvasRef}

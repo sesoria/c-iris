@@ -3,10 +3,10 @@ import {
   CardMedia,
   Typography,
   Box,
-  Chip,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import LiveTvIcon from '@mui/icons-material/LiveTv';
+import LiveIndicator from "../widgets/LiveIndicator"
+import VODIndicator from "../widgets/VODIndicator"
 
 const CardContainer = styled(Card)({
   position: "relative",
@@ -41,14 +41,6 @@ const TextOverlay = styled(Box)({
   color: "#fff",
 });
 
-const LiveBadge = styled(Chip)({
-  position: "absolute",
-  top: 8,
-  left: 8,
-  fontWeight: "bold",
-  animation: "pulse 1s infinite",
-});
-
 export default function StreamCard({ title, imageUrl }) {
   return (
     <CardContainer>
@@ -58,10 +50,12 @@ export default function StreamCard({ title, imageUrl }) {
         alt="Stream Thumbnail"
       />
 
-      <LiveBadge
-        icon={<LiveTvIcon />}
-        label="LIVE"
-        color="error"
+      <VODIndicator
+        sx={{
+          position: "absolute",
+          top: 8,
+          left: 8,
+        }}
       />
 
       <TextOverlay>

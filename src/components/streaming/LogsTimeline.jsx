@@ -52,8 +52,15 @@ const LogsTimeline = ({ streamName }) => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
-  return (
-    <Box sx={{ padding: 1 }}>
+return (
+  <Box sx={{ padding: 1 }}>
+    {logs.length === 0 ? (
+      <Paper elevation={1} sx={{ p: 3, textAlign: "center" }}>
+        <Typography variant="body1" color="text.secondary">
+          Aún no hay eventos registrados para este stream.
+        </Typography>
+      </Paper>
+    ) : (
       <Timeline
         sx={{
           [`& .${timelineItemClasses.root}:before`]: { flex: 0, padding: 0 },
@@ -61,12 +68,12 @@ const LogsTimeline = ({ streamName }) => {
       >
         {logs.map((log, index) => (
           <TimelineItem key={index} sx={{ alignItems: "center" }}>
-          <TimelineSeparator>
-            <TimelineDot color="primary" />
-            {index < logs.length - 1 && (
-              <TimelineConnector sx={{ flexGrow: 1, minHeight: 40 , backgroundColor: 'primary.main'}} />
-            )}
-          </TimelineSeparator>
+            <TimelineSeparator>
+              <TimelineDot color="primary" />
+              {index < logs.length - 1 && (
+                <TimelineConnector sx={{ flexGrow: 1, minHeight: 40, backgroundColor: 'primary.main' }} />
+              )}
+            </TimelineSeparator>
             <TimelineContent sx={{ py: '12px' }}>
               <Fade in timeout={400}>
                 <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
@@ -125,8 +132,10 @@ const LogsTimeline = ({ streamName }) => {
           </TimelineItem>
         ))}
       </Timeline>
-    </Box>
-  );
+    )}
+  </Box>
+);
+
 };
 
 export default LogsTimeline;

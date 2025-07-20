@@ -64,7 +64,7 @@ export default function useWebSocket(streamName) {
     
         if (data.timestamp && Array.isArray(data.labels)) {
           data.labels = data.labels.flat(); // Asegura que los labels sean un array plano
-          console.log("📡 Recibido:", data);
+          // console.log("📡 Recibido:", data);
           dispatch(addDetection({
             stream_name: streamName,
             timestamp: data.timestamp,
