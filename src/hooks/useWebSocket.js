@@ -50,7 +50,7 @@ export default function useWebSocket(streamName) {
     const ws = wsRef.current;
 
     ws.onopen = () => {
-      console.log("✅ WebSocket connected");
+      // console.log("✅ WebSocket connected");
     };
 
     ws.onmessage = (event) => {
@@ -80,7 +80,7 @@ export default function useWebSocket(streamName) {
     };
     ws.onerror = (error) => console.error("❌ WebSocket error:", error);
     ws.onclose = () => {
-      console.log("🔌 WebSocket disconnected");
+      // console.log("🔌 WebSocket disconnected");
       ws.send(JSON.stringify({ action: "disconnect", stream_name: streamName }));
     };
 

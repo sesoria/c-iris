@@ -1,3 +1,4 @@
+import { useEffect, useState, useRef } from "react";
 import Main from "../layouts/Main";
 import Stream from "./Stream";
 import LogsTimeline from "./LogsTimeline";
@@ -5,13 +6,10 @@ import StreamTags from "./StreamTags";
 import LiveIndicator from "../widgets/LiveIndicator"
 import VODIndicator from "../widgets/VODIndicator"
 
-import { Box, Typography } from "@mui/material";
-import {
-  Gite, Movie
-} from '@mui/icons-material';
-import { useLocation } from "react-router-dom";
+import { Box, Typography, Switch, FormControlLabel } from "@mui/material";
+import { Gite, Movie, SmartToy } from '@mui/icons-material';
+import { data, useLocation } from "react-router-dom";
 import useWebSocket from "../../hooks/useWebSocket";
-import { useEffect, useState } from "react";
 import StreamSkeleton from "../skeletons/StreamSkeleton";
 import { useGetHlsStreamUrlQuery, useGetStreamsQuery } from "../../api/streamsApi";
 
@@ -28,39 +26,70 @@ const getIconForVideoType = (type) => {
 
 const getVideoType = (type) => {
   switch (type?.toLowerCase()) {
-    case 'home': return <LiveIndicator  size="small"/>;
+    case 'home': return <LiveIndicator size="small" />;
     case 'movie': return <VODIndicator />;
     default: return null;
   }
 };
 
-const StreamInfo = ({streamData }) => (
-  <>
-    <Typography
-      variant="h6"
-      component="h2"
-      sx={{
-        mt: 2,
-        mb: 2,
-        fontWeight: 'bold',
-        pb: 1,
-        marginBottom: 0
-      }}
-    >
-      <Box
-        component="span"
-        sx={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          marginRight: '8px',
-          verticalAlign: 'middle',
-        }}
-      >
-        {getIconForVideoType(streamData?.type)}
-      </Box>
-      {streamData?.stream_name}
-    </Typography>
+const StreamInfo = ({ streamData }) => {
+  const [isEnabled, setIsEnabled] = useState(() => streamData?.task_status === "active");
+  const [loading, setLoading] = useState(false);
 
+  const handleSwitchChange = async (event) => {
+    const newValue = event.target.checked;
+    setIsEnabled(newValue); // estado controlado solo localmente
+    setLoading(true);
+
+    const action = newValue ? 'start' : 'stop';
+    const url = `https://phvitrbi12.execute-api.eu-west-1.amazonaws.com/start_ecs?stream_name=${streamData?.stream_name}&action=${action}`;
+
+    try {
+      await fetch(url);
+    } catch (error) {
+      setIsEnabled(!newValue); // revertimos si falla
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ mt: 2, mb: 2, pb: 1 }}
+      >
+        <Typography
+          variant="h6"
+          component="h2"
+          sx={{ fontWeight: 'bold', marginBottom: 0 }}
+        >
+          <Box
+            component="span"
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              marginRight: '8px',
+              verticalAlign: 'middle',
+            }}
+          >
+            {getIconForVideoType(streamData?.type)}
+          </Box>
+          {streamData?.stream_name}
+        </Typography>
+        <FormControlLabel
+          style={{marginRight: "45px"}}
+          label={
+            <Box display="flex" alignItems="center" gap={1}>
+              <SmartToy fontSize="medium" style={{ marginRight: "5px" }} />
+              <span>Activar detección</span>
+            </Box>
+          }
+          labelPlacement="start"
+          control={<Switch checked={isEnabled} onChange={handleSwitchChange} disabled={loading}/>}
+        />
+      </Box>
       <Box
         component="span"
         sx={{
@@ -72,10 +101,12 @@ const StreamInfo = ({streamData }) => (
       >
         {getVideoType(streamData?.type)}
       </Box>
+
       {streamData?.description}
-    <StreamTags tags={streamData?.tags} />
-  </>
-);
+      <StreamTags tags={streamData?.tags} />
+    </>
+  );
+};
 
 const LogsSection = ({ streamName }) => (
   <Box
@@ -120,7 +151,6 @@ export default function StreamingPage() {
 
   const { data: streamsData, isLoading: isStreamsLoading } = useGetStreamsQuery();
   const streamData = streamsData?.find((s) => s.stream_name === streamName);
-  console.log(streamData)
   const urlOffline = streamData?.url;
 
   const skipSecondCall = isStreamsLoading || Boolean(urlOffline);
@@ -152,7 +182,7 @@ export default function StreamingPage() {
     <Main>
       <Box display='flex' flexDirection={{ xs: 'column', md: 'row' }} gap={2}>
         <Box component='section' flex={1} minWidth='0' sx={{ width: { xs: '100%', md: '70%' }, maxWidth: { xs: '100%', md: '70%' }, mb: { xs: 2, md: 0 } }}>
-          <Stream url={currentUrl} streamName={streamName}/>
+          <Stream url={currentUrl} streamName={streamName} />
           <StreamInfo streamData={streamData} />
         </Box>
         <LogsSection streamName={streamName} />

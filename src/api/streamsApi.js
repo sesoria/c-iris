@@ -15,7 +15,6 @@ export const streamsApi = createApi({
   }),
   
   endpoints: (builder) => ({
-    
     getStreams: builder.query({
       query: () => '/get_streams_info',
       keepUnusedDataFor: 3600, // Mantener caché 1 hora
@@ -36,7 +35,25 @@ export const streamsApi = createApi({
       }),
       keepUnusedDataFor: 0, // Desactiva el caché para evitar datos obsoletos
     }),
+    startRekognitionTask: builder.query({
+      query: (stream_name) => ({
+        url: `/start_ecs?stream_name=${stream_name}&action=start`,
+      }),
+      keepUnusedDataFor: 0, // Desactiva el caché para evitar datos obsoletos
+    }),
+    stopRekognitionTask: builder.query({
+      query: (stream_name) => ({
+        url: `/start_ecs?stream_name=${stream_name}&action=stop`,
+      }),
+      keepUnusedDataFor: 0, // Desactiva el caché para evitar datos obsoletos
+    }),
   }),
 });
 
-export const { useGetStreamsQuery, useGetThumbnailsQuery, useGetHlsStreamUrlQuery } = streamsApi;
+export const {
+  useGetStreamsQuery,
+  useGetThumbnailsQuery,
+  useGetHlsStreamUrlQuery,
+  useStartRekognitionTaskQuery,
+  useStopRekognitionTaskQuery,
+} = streamsApi;

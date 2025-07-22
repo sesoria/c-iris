@@ -123,7 +123,6 @@ const Stream = ({ url, streamName }) => {
     const handleLoadedData = () => {
       const newBaseline = Date.now() / 1000 - video.currentTime;
       setBaseline(newBaseline - 2);
-      console.log("Nuevo baseline (segundos):", newBaseline);
 
       // Autoplay controlado
       video.play().catch((err) => {
