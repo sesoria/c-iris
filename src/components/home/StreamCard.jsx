@@ -41,7 +41,7 @@ const TextOverlay = styled(Box)({
   color: "#fff",
 });
 
-export default function StreamCard({ title, imageUrl }) {
+export default function StreamCard({ title, imageUrl, description, stream_status }) {
   return (
     <CardContainer>
       <BackgroundImage
@@ -50,26 +50,36 @@ export default function StreamCard({ title, imageUrl }) {
         alt="Stream Thumbnail"
       />
 
-      <VODIndicator
-        sx={{
-          position: "absolute",
-          top: 8,
-          left: 8,
-        }}
-      />
+      {stream_status === "online" ? (
+        <LiveIndicator
+          sx={{
+            position: "absolute",
+            top: 8,
+            left: 8,
+          }}
+        />
+      ) : (
+        <VODIndicator
+          sx={{
+            position: "absolute",
+            top: 8,
+            left: 8,
+          }}
+        />
+      )}
 
       <TextOverlay>
-        <Typography
+        <Typography style={{margin: "10px"}}
           variant="subtitle1"
           sx={{ fontWeight: "bold" }}
         >
           {title}
         </Typography>
-        <Typography
+        <Typography style={{margin: "10px"}}
           variant="body2"
           sx={{ opacity: 0.85 }}
         >
-          Some brief description of the stream...
+          {description}
         </Typography>
       </TextOverlay>
     </CardContainer>

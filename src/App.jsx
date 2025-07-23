@@ -7,20 +7,16 @@ import SideMenu from "./components/sidemenu/SideMenu";
 import Home from "./components/home/Home";
 import StreamingPage from "./components/streaming/StreamingPage";
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { faHouseUser, faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { faHouseUser, faTvAlt } from "@fortawesome/free-solid-svg-icons";
 
 
 function App() {
   const [menuExpanded, setMenuExpanded] = useState(false);
   const navigate = useNavigate(); 
 
-  const handleRanchoClick = (item) => {
+  const handleOptClick = (item) => {
     navigate(`/streams/${item}`, {state: { streamName: item }});
 
-  };
-
-  const handleOpt2Click = (item) => {
-    navigate(`/opt2/${item}`);
   };
 
   const menuItems = [
@@ -28,13 +24,13 @@ function App() {
       icon: faHouseUser,
       title: "Rancho",
       items: ["Rancho_1", "Rancho_2"],
-      onClick: handleRanchoClick,
+      onClick: handleOptClick,
     },
     {
-      icon: faChartLine,
-      title: "Opt2",
-      items: ["op3", "op4"],
-      onClick: handleOpt2Click,
+      icon: faTvAlt,
+      title: "VOD",
+      items: ["Tears of Steel", "Dragon", "Beep"],
+      onClick: handleOptClick,
     },
   ];
 

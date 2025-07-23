@@ -29,7 +29,7 @@ const StreamGrid = ({ streamsData, thumbnails }) => {
   const isLoading = !streamsData || !thumbnails; // Condición para mostrar Skeletons
 
   return (
-    <Box>
+    <Box style={{marginBottom: "30px"}}>
       <Grid container display={'flex'} rowSpacing={6} columnSpacing={10}>
         {(isLoading
           ? Array.from(new Array(visibleCount)) // Placeholder Skeletons mientras carga
@@ -60,7 +60,7 @@ const StreamGrid = ({ streamsData, thumbnails }) => {
                 style={{ textDecoration: "none" }}
               >
                 <Suspense fallback={<CircularProgress sx={{ display: 'block', margin: '0 auto' }}/>}>
-                  <StreamCard title={stream.stream_name} imageUrl={thumbnails[index].cover}/>
+                  <StreamCard title={stream.stream_name} imageUrl={thumbnails[index].cover} description={stream.description} stream_status={stream.stream_status}/>
                 </Suspense>
               </Link>
             )}
